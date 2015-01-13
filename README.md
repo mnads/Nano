@@ -1,2 +1,2 @@
 # Udacity Nanodegree Data Analyst
-See folder for each assignment
+Best to use nbviewer for the python notebook.
