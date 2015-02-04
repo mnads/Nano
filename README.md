@@ -1,2 +1,2 @@
 # Udacity Nanodegree Data Analyst
-Best to use nbviewer for the python notebook, or just download all to zip and run locally.
+Assignment problem solution answers are now under the wiki pages instead of pdf format.
