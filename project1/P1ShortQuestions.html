@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="LibreOffice 3.5  (Linux)">
 	<META NAME="CREATED" CONTENT="20150109;22015500">
-	<META NAME="CHANGED" CONTENT="20150119;273400">
+	<META NAME="CHANGED" CONTENT="20150212;21142900">
 	<STYLE TYPE="text/css">
 	<!--
 		@page { margin: 0.51in }
@@ -40,14 +40,10 @@ Dataset</P>
 	behind your work in the problem sets. You will attach a document
 	with your answers to these questions as part of your final project
 	submission.</B></FONT></P>
-	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">All
-	the problem sets in the Data Science course are now complete, the
-	code for each lesson is submitted within the udacity portal. Also in
-	my github repository I have a ipython notebook where I did
-	additional analysis. If any of them need to be redone or need
-	clarification please let me know. I would recommend using nbviewer
-	to see the notebook on github:<A HREF="http://nbviewer.ipython.org/">http://nbviewer.ipython.org/</A>
-	My references are listed at the bottom of this document.</SPAN></FONT></P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">I
+	have reworked a lot of code from my original submission which led me
+	to better analysis based on my evaluation. My references are listed
+	at the bottom of this document.</FONT></P>
 	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">To
 	start the project I first took a look at some sample data so I can
 	understand the data structure through reading the csv into a
@@ -61,10 +57,10 @@ Dataset</P>
 	use a one-tail or a two-tail P value? What is the null hypothesis?
 	What is your p-critical value?</B></FONT></P>
 	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">I
-	ran the Mann-Whitney U two-tail test to compare ridership between
-	non rainy and rainy days. My null hypothesis (H0) was there was no
-	significant difference in ridership on days it does not rain or it
-	does rain. My p-critical value is .50 </FONT>
+	ran the Mann-Whitney U two-tail test which tests if two populations
+	are the same. In this case the null hypothesis (H0) was: The count
+	of turnstile entries during rain days and non rain days IS the same
+	and NOT significantly different. My p-critical value was .05 </FONT>
 	</P>
 	<P><BR><BR>
 	</P>
@@ -75,11 +71,10 @@ Dataset</P>
 	</P>
 	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">The
 	Mann-Whitney U two tail test is applicable to the data set because
-	it has more than 20 values, the data is non-normal, and there are
-	two groups of data, rain and no rain. Also the other t-tests we
-	learned about require around the same number of datapoints, in this
-	case there are 33064 rows with no rain, 9585 with rain which would
-	give inaccurate results if we ran a ttest.</FONT></P>
+	the test does not assume the data is drawn from any particular
+	probability distribution.  There is also are a large set of values
+	and the data is non-normal making this non-parametric test
+	applicable.</FONT></P>
 	<P><BR><BR>
 	</P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>1.3 What
@@ -87,25 +82,23 @@ Dataset</P>
 	the following numerical values: p-values, as well as the means for
 	each of the two samples under test. </B></FONT>
 	</P>
-	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">Initially
-	I ran the test in one line U,p=scipy.stats.mannwhitneyu which gave
-	me a U value of 1845.53943866, but it gave me a nan value for p.  I
-	found a manual work around to calculate and I got a p value of
-	</FONT><FONT FACE="Liberation Sans Narrow, sans-serif">5.48269387142e-06
-	but this did not seem right as it was more than 1. To mitigate I
-	increased the scale to get a new p value of 0.0230437913962 and a z
-	of -4.54541569645. No Rain Entries Mean: 1845.53943866, Rain Entries
-	Mean: 2028.19603547</FONT></P>
+	<P><FONT FACE="Liberation Sans Narrow, sans-serif">MannWhitneyU test
+	U= 153635120.5 , p= nan </FONT>
+	</P>
+	<P>Needed to calculate p manually because it is not calculating
+	correctly</P>
+	<P>P value= 2.74134693571e-06 = 0.000002</P>
+	<P>P times two because two tailed= 5.48269387142e-06 = 0.000005</P>
+	<P>No Rain Entries Mean: 1845.53943866</P>
+	<P>Rain Entries Mean: 2028.19603547</P>
 	<P><BR><BR>
 	</P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>1.4 What is
 	the significance and interpretation of these results?</B></FONT></P>
-	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">Since
-	p-value&lt;0.50 this means the null hypothesis is rejected.  It
-	indicates the number of entries is significantly different on days
-	it does not rain or it does rain. Since the rain entries mean is
-	higher, this shows increased ridership on rainy days, but there are
-	more non rainy days so that cannot be so.</SPAN></FONT></P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">Since
+	the resulted p-value 0.000005&lt;0.05 this means the null hypothesis
+	is rejected.  This indicates the number of entries during rain days
+	and non rain days is NOT the same and IS significantly different.</FONT></P>
 	<H1 CLASS="western"><A NAME="h.z24p4e3rt9ik"></A><FONT FACE="Liberation Sans Narrow, sans-serif">Section
 	2. Linear Regression</FONT></H1>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>2.1 What
@@ -120,102 +113,110 @@ Dataset</P>
 		<LI><P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>Or
 		something different?</B></FONT></P>
 	</OL>
-	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">To
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">To
 	compute the coefficients theta and produce prediction for
-	ENTRIESn_hourly in regression model I used the gradient descent as
-	implemented in exercise 3.5, here is the chart it produced. I also
-	experimented with OLD using Statsmodels.</SPAN></FONT></P>
-	<P><IMG SRC="P1ShortQuestions_html_m2104ca84.jpg" NAME="graphics4" ALIGN=LEFT WIDTH=651 HEIGHT=475 BORDER=0><FONT FACE="Liberation Sans Narrow, sans-serif"><B>2.2
-	What features (input variables) did you use in your model? Did you
-	use any dummy variables as part of your features?</B></FONT></P>
-	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">For
-	features I used rain, precipi, hour, and meanwspdi (wind speed
-	mean). I did experiment with some other features by looking at the
-	variables from weather underground:
-	<A HREF="http://www.wunderground.com/weather/api/d/docs?d=resources/phrase-glossary">http://www.wunderground.com/weather/api/d/docs?d=resources/phrase-glossary</A>.
-	I also used one dummy variable of UNIT as part of my features.</SPAN></FONT></P>
-	<P><BR><BR>
+	ENTRIESn_hourly in regression model I applied OLS using Statsmodels.
+	</FONT>
 	</P>
-	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>2.3 Why did
-	you select these features in your model? We are looking for specific
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>2.2 What
+	features (input variables) did you use in your model? Did you use
+	any dummy variables as part of your features?</B></FONT></P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">I
+	used rain, hour, tempi, pressurei, and EXITSn_hourly as input
+	variables.</FONT></P>
+	<PRE CLASS="western"></PRE><P>
+	<FONT FACE="Liberation Sans Narrow, sans-serif"><B>2.3 Why did you
+	select these features in your model? We are looking for specific
 	reasons that lead you to believe that the selected features will
 	contribute to the predictive power of your model. </B></FONT>
 	</P>
-	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">I
-	used feature rain because that is the main feature needed to compare
-	ridership, precipi because my intuition told me it depends how much
-	it actually rains. Along side this, I also used hour for the time of
-	day feature because it seemed like it was needed and meanwspdi
-	because as soon as I included it in my model, it drastically
-	improved my R2&nbsp;value.</FONT></P>
-	<P><BR><BR>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">Here
+	are the reasons for each:</FONT></P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif"><B>Rain</B>
+	and <B>hour</B> were the main features needed to compare ridership.</FONT></P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif"><B>Tempi</B>
+	because my intuition told me temperature would be a factor in how
+	many people ride.</FONT></P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif"><B>Pressurei</B>
+	was also based on intuition because I know may people that are
+	affected with strong headaches when the pressure changes, makes them
+	want to call out of work.</FONT></P>
+	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>EXITSn_hourly</B><SPAN STYLE="font-weight: normal">
+	was used as it drastically improved my R2 value from 0.349 to 0.593.
+	However it also added the warning of there might be an indication
+	that there are strong multicollinearity or other numerical problems
+	in my summary.</SPAN></FONT></P>
+	<P STYLE="font-weight: normal"><BR><BR>
 	</P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>2.4 What are
 	the coefficients (or weights) of the non-dummy features in your
 	linear regression model?</B></FONT></P>
-	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">The
-	coefficients of the non-dummy features in my linear regression model
-	are </SPAN></FONT><FONT FACE="Liberation Sans Narrow, sans-serif"><FONT SIZE=3>[-1117.06687706
-	 -629.70384943   345.02220582 ...,    59.31488759   546.67791522 
-	1034.04094285]</FONT></FONT></P>
+	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><FONT SIZE=3>rain=83.099799</FONT></FONT></P>
+	<P>hour=56.682793</P>
+	<P>tempi=0.496865</P>
+	<P>pressurei=5.047889</P>
+	<P>EXITSn_hourly=0.819525</P>
 	<P STYLE="font-weight: normal"><BR><BR>
 	</P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>2.5 What is
-	your model’s R2&nbsp;(coefficients of determination) value?</B></FONT></P>
+	your model’s R2 (coefficients of determination) value?</B></FONT></P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">My
-	R2 value came out to be</SPAN></FONT> 0.461500534568 with the
-	gradient descent. While using OLS to compute R2 it was 0.577</P>
+	R2 value came out to be</SPAN></FONT> 0.593</P>
 	<P><BR><BR>
 	</P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>2.6 What does
-	this R2&nbsp;value mean for the goodness of fit for your regression
-	model?&nbsp;Do you think this linear model to predict ridership is
-	appropriate for this dataset, given this R2&nbsp; value?</B></FONT></P>
-	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">R2
-	value above .20 means it is a good result. Seems OLS is higher and
-	gives this great summary on the data. I think the OLS model is a
-	better predictor giving us about 57% confidence.</FONT></P>
-	<P STYLE="font-weight: normal"><BR><BR>
-	</P>
-	<PRE CLASS="western" STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">OLS Regression Results                            </FONT>
+	this R2 value mean for the goodness of fit for your regression
+	model? Do you think this linear model to predict ridership is
+	appropriate for this dataset, given this R2 value?</B></FONT></P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">The
+	closer the R2 value it is to 1, the better the model is.  Yes I
+	think it is appropriate for this dataset as R2 is it closer to 1
+	than it is to 0. Here are more details to my OLS regression results:</FONT></P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">print
+	prediction.summary()</FONT></P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">print
+	prediction.params</FONT></P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">print
+	prediction.predict()</FONT></P>
+	<PRE CLASS="western">OLS Regression Results                            
 ==============================================================================
-Dep. Variable:          EXITSn_hourly   R-squared:                       0.577
-Model:                            OLS   Adj. R-squared:                  0.577
-Method:                 Least Squares   F-statistic:                 1.161e+04
-Date:                Sun, 18 Jan 2015   Prob (F-statistic):               0.00
-Time:                        23:36:31   Log-Likelihood:            -3.7711e+05
-No. Observations:               42649   AIC:                         7.542e+05
-Df Residuals:                   42644   BIC:                         7.543e+05
+Dep. Variable:        ENTRIESn_hourly   R-squared:                       0.593
+Model:                            OLS   Adj. R-squared:                  0.593
+Method:                 Least Squares   F-statistic:                 1.242e+04
+Date:                Sun, 08 Feb 2015   Prob (F-statistic):               0.00
+Time:                        14:54:10   Log-Likelihood:            -3.8943e+05
+No. Observations:               42649   AIC:                         7.789e+05
+Df Residuals:                   42644   BIC:                         7.789e+05
 Df Model:                           5                                         
-===================================================================================
-                      coef    std err          t      P&gt;|t|      [95.0% Conf. Int.]
------------------------------------------------------------------------------------
-rain              102.2442     20.861      4.901      0.000        61.356   143.132
-precipi          -648.1422    336.839     -1.924      0.054     -1308.354    12.069
-hour               33.6267      1.092     30.780      0.000        31.485    35.768
-meanwspdi          11.7151      1.737      6.744      0.000         8.310    15.120
-ENTRIESn_hourly     0.4619      0.003    161.913      0.000         0.456     0.468
+=================================================================================
+                    coef    std err          t      P&gt;|t|      [95.0% Conf. Int.]
+---------------------------------------------------------------------------------
+rain             83.0998     26.857      3.094      0.002        30.460   135.740
+hour             56.6828      1.674     33.860      0.000        53.402    59.964
+tempi             0.4969      1.377      0.361      0.718        -2.202     3.195
+pressurei         5.0479      2.872      1.758      0.079        -0.581    10.676
+EXITSn_hourly     0.8195      0.005    159.841      0.000         0.809     0.830
 ==============================================================================
-Omnibus:                    45332.608   Durbin-Watson:                   1.340
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):          6324254.214
-Skew:                           5.147   Prob(JB):                         0.00
-Kurtosis:                      61.761   Cond. No.                     1.46e+05
+Omnibus:                    30026.619   Durbin-Watson:                   1.292
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):          1548963.926
+Skew:                           2.823   Prob(JB):                         0.00
+Kurtosis:                      31.979   Cond. No.                     6.39e+03
 ==============================================================================
 
 Warnings:
-[1] The condition number is large, 1.46e+05. This might indicate that there are
-strong multicollinearity or other numerical problems.</PRE><P STYLE="font-weight: normal">
-	<BR><BR>
-	</P>
-	<P><BR><BR>
-	</P>
-	<P><BR><BR>
-	</P>
-	<P><BR><BR>
-	</P>
-	<P><BR><BR>
-	</P>
-	<H1 CLASS="western"><A NAME="h.2c7kte8vcpcr"></A><FONT FACE="Liberation Sans Narrow, sans-serif">Section
+[1] The condition number is large, 6.39e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+rain             83.099799
+hour             56.682793
+tempi             0.496865
+pressurei         5.047889
+EXITSn_hourly     0.819525
+dtype: float64
+[  180.32193989   405.26677701   863.89889568 ...,   872.88581053
+  1097.47808785  1320.33450774]</PRE><H1 CLASS="western">
+	<A NAME="h.2c7kte8vcpcr"></A><FONT FACE="Liberation Sans Narrow, sans-serif">Section
 	3. Visualization</FONT></H1>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>Please include
 	two visualizations that show the relationships between two or more
@@ -258,13 +259,16 @@ strong multicollinearity or other numerical problems.</PRE><P STYLE="font-weight
 		the variability in the two samples. </B></FONT>
 		</P>
 	</UL>
+	<P STYLE="font-weight: normal"><IMG SRC="P1ShortQuestions_html_m18a79ca5.png" NAME="graphics5" ALIGN=LEFT WIDTH=594 HEIGHT=458 BORDER=0><BR><BR>
+	</P>
 	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">Here
-	I am showing hourly entries in histograms, y axis is the count,
-	while the colors separate if it rains or not Red=No Rain, Blue=Rain
-	I also have other graphs in my ipython notebook which I was
-	experimenting with. Here this shows the most ridership when it
-	doesn't rain at 12pm.</FONT></P>
-	<P><IMG SRC="P1ShortQuestions_html_m3daa5b75.png" NAME="graphics3" ALIGN=LEFT WIDTH=665 HEIGHT=467 BORDER=0><BR><BR>
+	is an overall view of the Data. From this visualization we can see
+	that the data is not normally distributed so we cannot run Welch's t
+	test. The chart also shows there are a lot more rows of no rain days
+	than rain days.</FONT></P>
+	<P><BR><BR>
+	</P>
+	<P><BR><BR>
 	</P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>3.2 One
 	visualization can be more freeform. Some suggestions are:</B></FONT></P>
@@ -276,9 +280,52 @@ strong multicollinearity or other numerical problems.</PRE><P STYLE="font-weight
 		stations have more exits or entries at different times of day</B></FONT></P>
 	</UL>
 	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">Here
-	is another view of how many people are entering and exiting per hour
-	on rainy and non rainy days. We see most entries are on non rainy
-	days.</FONT></P>
+	is another view more detailed view of how many people are entering
+	on rainy and non rainy days for each of the sampled hours. We can
+	observe at 4am there is a high frequency of data rows with small
+	amounts of entries, most on non rainy days.</FONT></P>
+	<P STYLE="font-weight: normal"><IMG SRC="P1ShortQuestions_html_3a1d661e.png" NAME="graphics3" ALIGN=LEFT WIDTH=665 HEIGHT=467 BORDER=0><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">Here
+	are some other interesting visualizations of data which shows the
+	total volumes per hour on Entries and Exits. Here we can observe the
+	highest cumulative ridership at the 20th hour, mostly with no rain.
+	It also shows Entries and Exit volumes are distributed in similar
+	hour patterns.</FONT></P>
 	<P><IMG SRC="P1ShortQuestions_html_2d6c2a06.png" NAME="graphics1" ALIGN=LEFT WIDTH=653 HEIGHT=410 BORDER=0><IMG SRC="P1ShortQuestions_html_m41803138.png" NAME="graphics2" ALIGN=LEFT WIDTH=599 HEIGHT=380 BORDER=0><BR><BR>
 	</P>
 	<H1 CLASS="western"><FONT FACE="Liberation Sans Narrow, sans-serif">Section
@@ -288,16 +335,19 @@ strong multicollinearity or other numerical problems.</PRE><P STYLE="font-weight
 	paragraphs long.</B></FONT></P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>4.1 From your
 	analysis and interpretation of the data, do more people ride the NYC
-	subway when it is raining or when it is not raining? &nbsp;</B></FONT></P>
-	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">From
-	my analysis and interpretation of the subway turnstiles data more
-	people ride the NYC subway when it is not raining. I first attempted
-	to do welch's ttest but after gathering all the details on the
-	dataset this test was not feasible. The Mann-Whitney U two tail test
-	was a better test to run. Here the test concluded that there was a
-	significant difference between ridership. Further analysis needs to
-	take place to confirm and check other possibility of why this data
-	is the way it is.</FONT></P>
+	subway when it is raining or when it is not raining? </B></FONT>
+	</P>
+	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">From
+	my analysis and interpretation of the subway turnstiles data it is
+	inconclusive if more more people ride the NYC subway when it is
+	raining or when it is not raining. The Mann-Whitney U two tail test
+	concluded that there was a significant difference between ridership.
+	Further analysis needs to take place to confirm and check other
+	possibilities of why this data is the way it is. </SPAN>There are
+	many more data points with non rainy days than with rainy days, and
+	so the histograms look much larger, but this doesn't show us the
+	average ridership. </FONT>
+	</P>
 	<P><BR><BR>
 	</P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>4.2 What
@@ -305,18 +355,14 @@ strong multicollinearity or other numerical problems.</PRE><P STYLE="font-weight
 	both your statistical tests and your linear regression to support
 	your analysis.</B></FONT></P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">A
-	combination of Mann-Whitney U test, linear regression, and OLS stats
-	helped me to make my conclusion. Plotting the data on a histogram
-	has helped a lot to see the actual numbers. The use of colors to
-	analyze rain was a good indicator of rain vs no rain. While </SPAN><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">No
+	combination of Mann-Whitney U test, OLS stats, and the histogram
+	helped me to make my conclusion. Visualizing the data with the use
+	of colors to analyze rain was a good indicator of rain vs no rain
+	across the entire data set. While </SPAN><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">No
 	Rain Entries Mean was 1845.53943866 and Rain Entries Mean was
-	2028.19603547, the count was 33,064 to 9,585 respectively. These
-	number are just more evidence to show more people ride when it
-	doesn't rain.</SPAN></FONT></FONT></P>
-	<P><BR><BR>
-	</P>
-	<P><BR><BR>
-	</P>
+	2028.19603547, the count of rows was 33,064 to 9,585 respectively.
+	These numbers show more evidence that the data is inconclusive
+	because there are more values of No Rain days.</SPAN></FONT></FONT></P>
 	<H1 CLASS="western"><A NAME="h.pn29jy1lzw03"></A><FONT FACE="Liberation Sans Narrow, sans-serif"><BR>Section
 	5. Reflection</FONT></H1>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif">Please address
@@ -332,32 +378,47 @@ strong multicollinearity or other numerical problems.</PRE><P STYLE="font-weight
 		<LI><P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>Statistical
 		test.</B></FONT></P>
 	</OL>
-	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">In
-	my analysis I found that the precipi variable made more sense to
-	analyze on than the rain variable because it showed the exact
-	precipitation inches at the time and location. The rain variable
-	only indicated 1 if it rained at any point in the day. The data rows
-	accounted for 5 different time intervals throughout the day.
-	Ridership can vary based on if it is raining at the time in the day,
-	not just that day overall. </FONT>
+	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><SPAN STYLE="font-weight: normal">In
+	my analysis of the dataset I found that the precipi with it's
+	relationship to time and station variables might have made more
+	sense to analyze than the rain variable because it showed the exact
+	precipitation inches, while the rain variable only indicated 1 if it
+	rained at any point in the day. The data rows accounted for 5
+	different time intervals throughout the day. Ridership can vary
+	based on if it is raining at the time in the day, not just that day
+	overall. Some other variables that could have effect ridership could
+	be events s</SPAN>uch as basketball, baseball games, and/or power
+	outages due to rain.</FONT></P>
+	<P><FONT FACE="Liberation Sans Narrow, sans-serif">For the linear
+	regression model(<SPAN STYLE="font-weight: normal">OLS using
+	Statsmodels)</SPAN><B> </B><SPAN STYLE="font-weight: normal">I could
+	not get the R2 value higher than .40 without using the EXITSn_hourly
+	field, which might be causing multicollinearity. It drastically
+	improved my R2 value from 0.349 to 0.593. As for the statistical
+	test MannWhitneyU two tailed, the code
+	U,p=scipy.stats.mannwhitneyu(rain,norain) gave me a nan p value.
+	Seemed however if I ran the same one line code on the Original Data
+	set file, it did calculate correctly. The workaround was to
+	calculate the new p value using the more lengthy code. </SPAN></FONT>
 	</P>
-	<P><FONT FACE="Liberation Sans Narrow, sans-serif">Adding in more
-	variables such as basketball or baseball games will increase
-	ridership, so there is a lot more to take into consideration when
-	answering the general question of does ridership increase. Another
-	really big though is if there is any power outages or delays due to
-	the rain. If that is the case ridership during the rain would
-	decrease because of limited service.</FONT></P>
+	<P STYLE="font-weight: normal"><BR><BR>
+	</P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>5.2 (Optional)
 	Do you have any other insight about the dataset that you would like
 	to share with us?</B></FONT></P>
-	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">I
-	think to truly test out the powers of analysis in python having 24
-	hour turnstiles data might have been more useful for this project.
-	Then comparing the ridership across the all the hours would have
-	been a fun adventure.</FONT></P>
-	<P STYLE="font-weight: normal"><BR><BR>
-	</P>
+	<P STYLE="font-weight: normal"><FONT FACE="Liberation Sans Narrow, sans-serif">While
+	sticking with my conclusion that more testing needed to be done, my
+	brain stumbled upon another way to analyze the dataset. You can see
+	it in my notebook right under the Overall Entries Hourly vs
+	Frequency chart. This chart made me see that most of the no rains
+	were with small amounts of Entries Hourly. This made me think to
+	filter out(ignore) any row less than 2,500 Entries Hourly from both
+	rain and non rain day. From there, I took a random sample of 2,000
+	rows from rain and no rain data and analyzed the means. I ran the
+	test 2,000 times and everytime the mean was higher on rain days.
+	This leads me to believe that ridership during rainy days is higher,
+	but this is just an assumption and might not take more variables
+	into consideration.</FONT></P>
 	<P><BR><BR>
 	</P>
 	<H1 CLASS="western"><FONT FACE="Liberation Sans Narrow, sans-serif">References</FONT></H1>
@@ -372,6 +433,13 @@ strong multicollinearity or other numerical problems.</PRE><P STYLE="font-weight
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B><A HREF="http://en.wikipedia.org/wiki/Ordinary_least_squares">http://en.wikipedia.org/wiki/Ordinary_least_squares</A></B></FONT></P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B><A HREF="http://en.wikipedia.org/w/index.php?title=Linear_least_squares_(mathematics">http://en.wikipedia.org/w/index.php?title=Linear_least_squares_(mathematics</A>)</B></FONT></P>
 	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B><A HREF="http://en.wikipedia.org/wiki/Polynomial_regression">http://en.wikipedia.org/wiki/Polynomial_regression</A></B></FONT></P>
+	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>http://blog.minitab.com/blog/adventures-in-statistics/how-high-should-r-squared-be-in-regres
+	</B></FONT>
+	</P>
+	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>sion-analysis</B></FONT></P>
+	<P><FONT FACE="Liberation Sans Narrow, sans-serif"><B>http://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.describe.html</B></FONT></P>
+	<P><BR><BR>
+	</P>
 	<P><BR><BR>
 	</P>
 	<P><BR><BR>
