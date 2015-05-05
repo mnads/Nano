@@ -173,7 +173,7 @@ ggplot(wineqr, aes(quality, alcohol, colour = sulphates))+
 ```
 
 ### Description Two
-The scatterplot matrix revealed a positive correlation with sulphates so here we 
+The scatterplot matrix revealed a positive correlation with sulphates so here we is how it is related to alcohol and quality. Sulphates is a wine additive which can contribute to sulfur dioxide gas (S02) levels, wich acts as an antimicrobial and antioxidant. 
 
 ### Plot Three
 ```{r echo=FALSE, Plot_Three}
@@ -182,7 +182,7 @@ ggplot(aes(x = citric.acid), data = wineqr) + geom_histogram(color = "orange")+s
 ```
 
 ### Description Three
-
+Finally this shows how citric acid affects quality. Here we can see citric acid is distributed throughout the diffrent quality scores. Most are in the 5 and 6 score.
 ------
 
 # Reflection
